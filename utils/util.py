@@ -4,7 +4,7 @@ from collections import OrderedDict
 import librosa
 import os
 import sys
-sys.path.append('../')
+sys.path.insert(0, os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import torch
 import numpy as np
 from data_loader import AudioData
@@ -122,7 +122,7 @@ def apply_cmvn(samp,cmvn_dict):
 
 if __name__ == "__main__":
     kwargs = {'window':'hann', 'nfft':256, 'window_length':256, 'hop_length':64, 'center':False, 'is_mag':True, 'is_log':True}
-    compute_cmvn("/home/likai/data1/create_scp/tr_mix.scp",'../cmvn.ark',**kwargs)
+    compute_cmvn("scp/tr_mix.scp",'cmvn.ark',**kwargs)
     #file = pickle.load(open('cmvn.ark','rb'))
     #print(file)
     #samp = read_wav('../1.wav')

@@ -1,6 +1,4 @@
 import sys
-sys.path.append('./')
-
 from trainer import Trainer
 import torch
 import argparse
@@ -9,6 +7,7 @@ import logging
 from logger import set_logger
 from model import model
 from data_loader import Dataloader, AudioData
+from data_loader import AudioData
 
 
 
@@ -47,7 +46,7 @@ def make_optimizer(params, opt):
 def train():
     parser = argparse.ArgumentParser(
         description='Parameters for training Deep Clustering')
-    parser.add_argument('--opt', type=str, help='Path to option YAML file.')
+    parser.add_argument('--opt', type=str, help='Path to option YAML file.', default='./config/train.yml')
     args = parser.parse_args()
     opt = option.parse(args.opt)
     set_logger.setup_logger(opt['logger']['name'], opt['logger']['path'],

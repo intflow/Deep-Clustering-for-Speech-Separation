@@ -1,20 +1,20 @@
 import os
 
-train_mix_scp = 'tr_mix.scp'
-train_s1_scp = 'tr_s1.scp'
-train_s2_scp = 'tr_s2.scp'
+train_mix_scp = 'scp/tr_mix.scp'
+train_s1_scp = 'scp/tr_s1.scp'
+train_s2_scp = 'scp/tr_s2.scp'
 
-test_mix_scp = 'tt_mix.scp'
-test_s1_scp = 'tt_s1.scp'
-test_s2_scp = 'tt_s2.scp'
+test_mix_scp = 'scp/tt_mix.scp'
+test_s1_scp = 'scp/tt_s1.scp'
+test_s2_scp = 'scp/tt_s2.scp'
 
-train_mix = '/home/likai/likai/Dataset/wsj0-mix/2speakers/wav8k/min/tr/mix'
-train_s1 = '/home/likai/likai/Dataset/wsj0-mix/2speakers/wav8k/min/tr/s1'
-train_s2 = '/home/likai/likai/Dataset/wsj0-mix/2speakers/wav8k/min/tr/s2'
+train_mix = '/DL_data_big/AIGC_3rd_track3/Mono_10000_tr/mix'
+train_s1 = '/DL_data_big/AIGC_3rd_track3/Mono_10000_tr/sep1'
+train_s2 = '/DL_data_big/AIGC_3rd_track3/Mono_10000_tr/sep2'
 
-test_mix = '/home/likai/likai/Dataset/wsj0-mix/2speakers/wav8k/min/tt/mix'
-test_s1 = '/home/likai/likai/Dataset/wsj0-mix/2speakers/wav8k/min/tt/s1'
-test_s2 = '/home/likai/likai/Dataset/wsj0-mix/2speakers/wav8k/min/tt/s2'
+test_mix = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/mix'
+test_s1 = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/sep1'
+test_s2 = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/sep2'
 
 tr_mix = open(train_mix_scp,'w')
 for root, dirs, files in os.walk(train_mix):
@@ -64,13 +64,13 @@ for root, dirs, files in os.walk(test_s2):
         tt_s2.write(file+" "+root+'/'+file)
         tt_s2.write('\n')
 
-cv_mix_scp = 'cv_mix.scp'
-cv_s1_scp = 'cv_s1.scp'
-cv_s2_scp = 'cv_s2.scp'
+cv_mix_scp = 'scp/cv_mix.scp'
+cv_s1_scp = 'scp/cv_s1.scp'
+cv_s2_scp = 'scp/cv_s2.scp'
 
-cv_mix = '/home/likai/likai/Dataset/wsj0-mix/2speakers/wav8k/min/cv/mix'
-cv_s1 = '/home/likai/likai/Dataset/wsj0-mix/2speakers/wav8k/min/cv/s1'
-cv_s2 = '/home/likai/likai/Dataset/wsj0-mix/2speakers/wav8k/min/cv/s2'
+cv_mix = '/DL_data_big/AIGC_3rd_track3/Mono_1000_val/mix'
+cv_s1 = '/DL_data_big/AIGC_3rd_track3/Mono_1000_val/sep1'
+cv_s2 = '/DL_data_big/AIGC_3rd_track3/Mono_1000_val/sep2'
 
 cv_mix_file = open(cv_mix_scp,'w')
 for root, dirs, files in os.walk(cv_mix):

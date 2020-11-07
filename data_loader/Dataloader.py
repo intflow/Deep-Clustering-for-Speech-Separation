@@ -1,6 +1,6 @@
 import sys
-sys.path.append('../')
-
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from torch.nn.utils.rnn import pack_sequence, pad_sequence
 from data_loader import AudioData
 import torch

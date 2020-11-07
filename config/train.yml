@@ -5,18 +5,18 @@ num_spks: 2
 #### datasets
 datasets:
   train:
-    dataroot_mix: /home/likai/Desktop/create_scp/tr_mix.scp
-    dataroot_targets: [/home/likai/Desktop/create_scp/tr_s1.scp,/home/likai/Desktop/create_scp/tr_s2.scp]
+    dataroot_mix: scp/tr_mix.scp
+    dataroot_targets: [scp/tr_s1.scp,scp/tr_s2.scp]
 
   val:
-    dataroot_mix: /home/likai/Desktop/create_scp/cv_mix.scp
-    dataroot_targets: [/home/likai/Desktop/create_scp/cv_s1.scp,/home/likai/Desktop/create_scp/cv_s2.scp]
+    dataroot_mix: scp/cv_mix.scp
+    dataroot_targets: [scp/cv_s1.scp,scp/cv_s2.scp]
   
   dataloader_setting:
     shuffle: true
     num_workers: 16  # per GPU
     batch_size: 40
-    cmvn_file: /home/likai/Desktop/DPCL/cmvn.ark
+    cmvn_file: cmvn.ark
   
   audio_setting:
     window: hann
@@ -42,7 +42,7 @@ DPCL:
 train:
   epoch: 100
   early_stop: 10
-  path: /home/likai/Desktop/DPCL/checkpoint
+  path: checkpoint
   is_gpu: true
 
 #### Optimizer settings
@@ -55,13 +55,13 @@ optim:
 #### Resume training settings
 resume:
   state: false
-  path: /home/likai/Desktop/DPCL/checkpoint
+  path: checkpoint
 
 
 #### logger
 logger:
   name: DPCL
-  path: /home/likai/Desktop/DPCL/checkpoint
+  path: checkpoint
   screen: true
   tofile: false
   print_freq: 100

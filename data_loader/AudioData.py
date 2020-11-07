@@ -1,7 +1,7 @@
 import sys
-sys.path.append('../')
-
-import utils.util as ut
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from utils import util as ut
 from utils.stft_istft import STFT
 import torch
 

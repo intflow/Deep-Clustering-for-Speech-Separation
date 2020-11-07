@@ -66,7 +66,7 @@ def istft(file,
           window="hann",
           transpose=True,
           norm=None,
-          fs=16000,
+          fs=8000,
           nsamps=None):
     if transpose:
         stft_mat = np.transpose(stft_mat)

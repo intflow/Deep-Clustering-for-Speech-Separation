@@ -1,12 +1,11 @@
 import sys
-sys.path.append('../')
-
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import time
 import logging
 from logger.set_logger import setup_logger
 from model.loss import Loss
 import torch
-import os
 import matplotlib.pyplot as plt
 
 
@@ -29,24 +28,30 @@ class Trainer(object):
 
         if opt['train']['is_gpu']:
             self.logger.info('Load Nvida GPU .....')
-            self.device = torch.device('cuda:0')
-            self.dpcl = DPCL.to(self.device)
+            os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+            os.environ["CUDA_VISIBLE_DEVICES"] = "0,7"
+
+            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         else:
             self.logger.info('Load CPU ...........')
             self.device = torch.device('cpu')
-            self.dpcl = DPCL.to(self.device)
             
         if opt['resume']['state']:    
             ckp = torch.load(opt['resume']['path'],map_location='cpu')
             self.cur_epoch = ckp['epoch']
             self.logger.info("Resume from checkpoint {}: epoch {:d}".format(
                 opt['resume']['path'], self.cur_epoch))
-            self.dpcl = DPCL.load_state_dict(ckp['model_state_dict']).to(self.device)
+            self.dpcl = DPCL.load_state_dict(ckp['model_state_dict'])
             self.optimizer = optimizer.load_state_dict(ckp['optim_state_dict'])
         else:
-            self.dpcl = DPCL.to(self.device)
+            self.dpcl = DPCL
             self.optimizer = optimizer
         
+        #if torch.cuda.device_count() > 1:
+        #    self.dpcl = torch.nn.DataParallel(self.dpcl)
+        #    self.logger.info('-------------Use Multi-GPU--------------')
+        self.dpcl = self.dpcl.to(self.device)
+
         if opt['optim']['clip_norm']:
             self.clip_norm = opt['optim']['clip_norm']
             self.logger.info("Gradient clipping by {}, default L2".format(self.clip_norm))
