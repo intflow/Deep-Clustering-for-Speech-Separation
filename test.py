@@ -9,7 +9,7 @@ import argparse
 from model import model
 from utils.stft_istft import STFT
 import os
-import librosa
+import soundfile as sf
 import pickle
 from tqdm import tqdm
 class Separation(object):
@@ -29,12 +29,11 @@ class Separation(object):
             self.device = torch.device('cuda')
         else:
             self.dpcl = dpcl
-        self.dpcl = dpcl
-        ckp = torch.load('./checkpoint/DPCL/best.pt',map_location=self.device)
+        ckp = torch.load('./checkpoint/'+opt['name']+'/best.pt',map_location=self.device)
         self.dpcl.load_state_dict(ckp['model_state_dict'])
         self.dpcl.eval()
-        self.waves = AudioData(scp_file, **opt['audio_setting'])
-        self.keys = AudioData(scp_file, **opt['audio_setting']).wave_keys
+        self.waves = AudioData(scp_file, **opt['datasets']['audio_setting'])
+        self.keys = AudioData(scp_file, **opt['datasets']['audio_setting']).wave_keys
         self.kmeans = KMeans(n_clusters=opt['num_spks'])
         self.num_spks = opt['num_spks']
         self.save_file = save_file
@@ -45,8 +44,8 @@ class Separation(object):
         '''
         # TF x D
         mix_emb = self.dpcl(torch.tensor(
-            wave, dtype=torch.float32), is_train=False)
-        mix_emb = mix_emb.detach().numpy()
+            wave, dtype=torch.float32).to(self.device), is_train=False)
+        mix_emb = mix_emb.cpu().detach().numpy()
         # N x D
         mix_emb = mix_emb[non_silent.reshape(-1)]
         # N
@@ -60,11 +59,11 @@ class Separation(object):
         return targets_mask
 
     def run(self):
-        stft_settings = {'window': self.opt['audio_setting']['window'],
-                         'nfft': self.opt['audio_setting']['nfft'],
-                         'window_length': self.opt['audio_setting']['window_length'],
-                         'hop_length': self.opt['audio_setting']['hop_length'],
-                         'center': self.opt['audio_setting']['center']}
+        stft_settings = {'window': self.opt['datasets']['audio_setting']['window'],
+                         'nfft': self.opt['datasets']['audio_setting']['nfft'],
+                         'window_length': self.opt['datasets']['audio_setting']['window_length'],
+                         'hop_length': self.opt['datasets']['audio_setting']['hop_length'],
+                         'center': self.opt['datasets']['audio_setting']['center']}
 
         stft_istft = STFT(**stft_settings)
         index = 0
@@ -74,7 +73,7 @@ class Separation(object):
             log_wave = np.log(np.maximum(np.abs(wave), EPSILON))
 
             # apply cmvn 
-            cmvn = pickle.load(open(self.opt['cmvn_file'],'rb'))
+            cmvn = pickle.load(open(self.opt['datasets']['dataloader_setting']['cmvn_file'],'rb'))
             cmvn_wave = util.apply_cmvn(log_wave,cmvn)
 
             # calculate non silent
@@ -89,7 +88,8 @@ class Separation(object):
                     self.save_file, self.opt['name'], 'spk'+str(i+1))
                 os.makedirs(output_file, exist_ok=True)
                 
-                librosa.output.write_wav(output_file+'/'+name, i_stft, 8000)
+                #librosa.output.write_wav(output_file+'/'+name, i_stft, 8000)
+                sf.write(output_file+'/'+name, i_stft, 8000, 'PCM_16')
             index+=1
         print('Processing {} utterances'.format(index))
             
@@ -98,14 +98,16 @@ class Separation(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Parameters for testing Deep Clustering')
-    parser.add_argument('-scp', type=str, help='Path to option scp file.')
+    parser.add_argument('-scp', type=str, help='Path to option scp file.', default='./scp/tt_mix.scp')
     parser.add_argument('-opt', type=str,
-                        help='Path to option YAML file.')
+                        help='Path to option YAML file.', default='./config/train.yml')
     parser.add_argument('-save_file', type=str,
-                        help='Path to save file.')
+                        help='Path to save file.', default='/DL_data_big/AIGC_3rd_track3/DC_results')
     args = parser.parse_args()
     opt = option.parse(args.opt)
     dpcl = model.DPCL(**opt['DPCL'])
     
+    opt['datasets']['audio_setting']['is_mag'] = False
+    opt['datasets']['audio_setting']['is_log'] = False
     separation = Separation(dpcl, args.scp, opt, args.save_file)
     separation.run()
