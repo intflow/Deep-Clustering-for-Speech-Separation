@@ -29,7 +29,7 @@ class Trainer(object):
         if opt['train']['is_gpu']:
             self.logger.info('Load Nvida GPU .....')
             os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-            os.environ["CUDA_VISIBLE_DEVICES"] = "0,7"
+            os.environ["CUDA_VISIBLE_DEVICES"] = "6,7"
 
             self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         else:
@@ -168,7 +168,7 @@ class Trainer(object):
         #plt.xticks(l, lx)
         plt.ylabel('loss')
         plt.xlabel('epoch')
-        plt.savefig('conv_tasnet_loss.png')
+        plt.savefig('DeepClustering.png')
 
 
     def save_checkpoint(self, epoch, best=True):
