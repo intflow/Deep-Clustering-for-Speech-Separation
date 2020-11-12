@@ -6,9 +6,9 @@ test_s2_scp = 'scp/tt_s2.scp'
 #test_mix = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/mix'
 #test_s1 = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/sep1'
 #test_s2 = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/sep2'
-test_mix = '/DL_data_big/AIGC_3rd_track3/DC_test/exp2'
-test_s1 = '/DL_data_big/AIGC_3rd_track3/DC_test/exp2'
-test_s2 = '/DL_data_big/AIGC_3rd_track3/DC_test/exp2'
+test_mix = '/DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUNet'
+test_s1 = '/DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUNet'
+test_s2 = '/DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUNet'
 
 
 tt_mix = open(test_mix_scp,'w')

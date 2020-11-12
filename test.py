@@ -38,6 +38,7 @@ class Separation(object):
         self.num_spks = opt['num_spks']
         self.save_file = save_file
         self.opt = opt
+        
     def _cluster(self, wave, non_silent):
         '''
             input: T x F
