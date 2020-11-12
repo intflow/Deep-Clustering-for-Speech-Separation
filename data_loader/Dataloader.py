@@ -23,10 +23,12 @@ class dataset(Dataset):
 
     def __getitem__(self, index):
         key = self.keys[index]
-        if key not in self.keys:
-            raise ValueError
-        return (self.mix_reader[key], [target[key] for target in self.target_readers])
-
+        #if key not in self.keys:
+        #    raise ValueError
+        try:
+            return (self.mix_reader[key], [target[key] for target in self.target_readers])
+        except Exception as e:
+            print(e)
 
 class dataloader(object):
     def __init__(self, dataset, batch_size=40, shuffle=True, num_workers=16, cmvn_file='../cmvn.ark'):
@@ -61,8 +63,11 @@ class dataloader(object):
         return mix_wave, target_waves, non_slient
 
     def __iter__(self):
-        for b in self.dataload:
-            yield b
+        try:
+            for b in self.dataload:
+                yield b
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":
