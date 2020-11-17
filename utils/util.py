@@ -33,7 +33,7 @@ def read_wav(file_path, sr=8000, is_return_sr=False):
        file path: wav file path
        is_return_sr: if true, return sr number
     '''
-    samp, sr = librosa.load(file_path, sr=sr)
+    samp, sr = librosa.load(file_path, sr=sr, mono=False)
     if is_return_sr:
         return samp, sr
     return samp

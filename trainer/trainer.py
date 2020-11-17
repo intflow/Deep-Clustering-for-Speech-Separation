@@ -37,14 +37,13 @@ class Trainer(object):
             self.device = torch.device('cpu')
             
         if opt['resume']['state']:    
-            ckp = torch.load(opt['resume']['path']+'/last.pt')
-            self.cur_epoch = ckp['epoch']
+            ckp = torch.load(opt['resume']['path']+'/best.pt')
+            self.cur_epoch = 0#ckp['epoch']
             self.logger.info("Resume from checkpoint {}: epoch {:d}".format(
                 opt['resume']['path'], self.cur_epoch))
-            self.dpcl = DPCL.load_state_dict(ckp['model_state_dict'])
+            DPCL.load_state_dict(ckp['model_state_dict'])
             #self.optimizer = optimizer.load_state_dict(ckp['optim_state_dict'])
-        else:
-            self.dpcl = DPCL
+        self.dpcl = DPCL
         self.optimizer = optimizer
         
         #if torch.cuda.device_count() > 1:

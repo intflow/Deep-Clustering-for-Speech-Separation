@@ -23,15 +23,25 @@ class STFT(object):
         self.center =center
     def stft(self, samp, is_mag=False,is_log=False):
         # is_mag: Whether the output is an amplitude value
-        stft_r = librosa.stft(samp, n_fft=self.nfft, hop_length=self.hop_length,
+        stft_m = librosa.stft(np.mean(samp,axis=0), n_fft=self.nfft, hop_length=self.hop_length,
                               win_length=self.window_length, window=self.window,center=self.center)
+        stft_l = librosa.stft(samp[0,:], n_fft=self.nfft, hop_length=self.hop_length,
+                              win_length=self.window_length, window=self.window,center=self.center)
+        stft_r = librosa.stft(samp[1,:], n_fft=self.nfft, hop_length=self.hop_length,
+                              win_length=self.window_length, window=self.window,center=self.center)
+        stft_m = np.transpose(stft_m)
+        stft_l = np.transpose(stft_l)
         stft_r = np.transpose(stft_r)
         if is_mag:
+            stft_m = np.abs(stft_m)
+            stft_l = np.abs(stft_l)
             stft_r = np.abs(stft_r)
         if is_log:
             min_z = np.finfo(float).eps
+            stft_m = np.log(np.maximum(stft_m,min_z))
+            stft_l = np.log(np.maximum(stft_l,min_z))
             stft_r = np.log(np.maximum(stft_r,min_z))
-        return stft_r
+        return stft_m, stft_l, stft_r
 
     def istft(self, stft_samp):
         stft_samp = np.transpose(stft_samp)
