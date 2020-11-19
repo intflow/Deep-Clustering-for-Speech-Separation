@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 00000_1.wav /DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUVAD/00000_1.wav
 00001_1.wav /DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUVAD/00001_1.wav
 00002_1.wav /DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUVAD/00002_1.wav
@@ -18,3 +19,6 @@
 00009_1.wav /DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUVAD/00009_1.wav
 00009_2.wav /DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUVAD/00009_2.wav
 00009_3.wav /DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUVAD/00009_3.wav
+=======
+00004_1.wav ../wav_tmp/DPCL_optim/00004_1.wav
+>>>>>>> a37b103c6e5a6ab8dc44b101d8d8a0ef5b397ff4

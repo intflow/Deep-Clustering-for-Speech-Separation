@@ -6,9 +6,15 @@ test_s2_scp = 'scp/tt_s2.scp'
 #test_mix = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/mix'
 #test_s1 = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/mix'
 #test_s2 = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/mix'
+<<<<<<< HEAD
 test_mix = '/DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUVAD'
 test_s1 = '/DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUVAD'
 test_s2 = '/DL_data_big/AIGC_3rd_track3/2020_track3_rev/t3_audio.TAUVAD'
+=======
+test_mix = '../wav_tmp/DPCL_optim'
+test_s1 = '../wav_tmp/DPCL_optim'
+test_s2 = '../wav_tmp/DPCL_optim'
+>>>>>>> a37b103c6e5a6ab8dc44b101d8d8a0ef5b397ff4
 
 
 tt_mix = open(test_mix_scp,'w')

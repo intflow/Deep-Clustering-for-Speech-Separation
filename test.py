@@ -68,29 +68,34 @@ class Separation(object):
 
         stft_istft = STFT(**stft_settings)
         index = 0
-        for wave in tqdm(self.waves):
+        for spec_m, spec_l, spec_r in tqdm(self.waves):
             # log spk_spectrogram
             EPSILON = np.finfo(np.float32).eps
-            log_wave = np.log(np.maximum(np.abs(wave), EPSILON))
+            log_spec = np.log(np.maximum(np.abs(spec_m), EPSILON))
 
             # apply cmvn 
             cmvn = pickle.load(open(self.opt['datasets']['dataloader_setting']['cmvn_file'],'rb'))
-            cmvn_wave = util.apply_cmvn(log_wave,cmvn)
+            cmvn_wave = util.apply_cmvn(log_spec,cmvn)
 
             # calculate non silent
-            non_silent = util.compute_non_silent(log_wave).astype(np.bool)
+            non_silent = util.compute_non_silent(log_spec).astype(np.bool)
             
             target_mask = self._cluster(cmvn_wave, non_silent)
             for i in range(len(target_mask)):
                 name = self.keys[index]
-                spk_spectrogram = target_mask[i] * wave
-                i_stft = stft_istft.istft(spk_spectrogram)
-                output_file = os.path.join(
-                    self.save_file, self.opt['name'], 'spk'+str(i+1))
+                spk_spectrogram_l = target_mask[i] * spec_l
+                spk_spectrogram_r = target_mask[i] * spec_r
+                i_stft_l = stft_istft.istft(spk_spectrogram_l)
+                i_stft_r = stft_istft.istft(spk_spectrogram_r)
+
+                i_stft = np.concatenate((np.reshape(i_stft_l,(1,-1)), np.reshape(-1*i_stft_r,(1,-1))), axis=0)
+                #output_file = os.path.join(
+                #    self.save_file, self.opt['name'], 'spk'+str(i+1))
+                output_file = self.save_file
                 os.makedirs(output_file, exist_ok=True)
                 
                 #librosa.output.write_wav(output_file+'/'+name, i_stft, 8000)
-                sf.write(output_file+'/'+name, i_stft, 8000, 'PCM_16')
+                sf.write(output_file+'/'+name[:-4]+'_'+str(i+1)+'.wav', i_stft.T, 8000, 'PCM_16')
             index+=1
         print('Processing {} utterances'.format(index))
             
