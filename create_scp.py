@@ -8,9 +8,9 @@ test_mix_scp = 'scp/tt_mix.scp'
 test_s1_scp = 'scp/tt_s1.scp'
 test_s2_scp = 'scp/tt_s2.scp'
 
-train_mix = '/DL_data_big/AIGC_3rd_track3/Mono_100000_tr/mix'
-train_s1 = '/DL_data_big/AIGC_3rd_track3/Mono_100000_tr/sep1'
-train_s2 = '/DL_data_big/AIGC_3rd_track3/Mono_100000_tr/sep2'
+train_mix = '/DL_data_big/AIGC_3rd_track3/Mono_100000_tr2/mix'
+train_s1 = '/DL_data_big/AIGC_3rd_track3/Mono_100000_tr2/sep1'
+train_s2 = '/DL_data_big/AIGC_3rd_track3/Mono_100000_tr2/sep2'
 
 test_mix = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/mix'
 test_s1 = '/DL_data_big/AIGC_3rd_track3/Mono_100_test/sep1'

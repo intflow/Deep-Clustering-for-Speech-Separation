@@ -48,13 +48,13 @@ train:
 #### Optimizer settings
 optim:
   name: RMSprop   ### Adam, RMSprop, SGD
-  lr: 1.0e-5
+  lr: 1.0e-6
   momentum: 0.9
   weight_decay: 0
   clip_norm: 200
 #### Resume training settings
 resume:
-  state: false
+  state: true
   path: checkpoint
 
 
